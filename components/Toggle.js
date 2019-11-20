@@ -34,11 +34,11 @@ export default function Toggle({ options, value, onChange }) {
   );
 }
 
-Toggle.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-  value: PropTypes.number.isRequired,
-};
+// Toggle.propTypes = {
+//   onChange: PropTypes.func.isRequired,
+//   options: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+//   value: PropTypes.number.isRequired,
+// };
 
 const styles = StyleSheet.create({
   container: {

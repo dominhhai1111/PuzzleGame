@@ -17,11 +17,11 @@ const State = {
 const BOARD_SIZES = [3, 4, 5, 6];
 
 export default class Start extends React.Component {
-    static propTypes = {
-        onChangeSize: PropTypes.func.isRequired,
-        onStartGame: PropTypes.func.isRequired,
-        size: PropTypes.number.isRequired,
-    };
+    // static propTypes = {
+    //     onChangeSize: PropTypes.func.isRequired,
+    //     onStartGame: PropTypes.func.isRequired,
+    //     size: PropTypes.number.isRequired,
+    // };
 
     state = {
         transitionState: State.Launching,
@@ -30,22 +30,63 @@ export default class Start extends React.Component {
     toggleOpacity = new Animated.Value(0);
     buttonOpacity = new Animated.Value(0);
 
+    async componentWillMount() {
+        await sleep(500);
+
+        await configureTransition(() => {
+            this.setState({ transitionState: State.WillTransitionIn });
+        });
+
+        Animated.timing(this.toggleOpacity, {
+            toValue: 1,
+            duration: 500,
+            delay: 500,
+            useNativeDriver: true,
+        }).start();
+
+        Animated.timing(this.buttonOpacity, {
+            toValue: 1,
+            duration: 500,
+            delay: 500,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    handlePressStart = async () => {
+        console.log('Handle press start');
+        const { onStartGame } = this.props;
+
+        await configureTransition(() => {
+            this.setState({ transitionState: State.WillTransitionOut });
+        });
+
+        onStartGame();
+    };
+
     render() {
         const { size, onChangeSize } = this.props;
         const { transitionState } = this.state;
+        const toggleOpacity = { opacity: this.toggleOpacity };
+        const buttonOpacity = { opacity: this.buttonOpacity };
 
         return (
-            <View style={styles.container}>
-                <View style={styles.logo}>
-                    <Logo />
+            transitionState !== State.WillTransitionOut && (
+                <View style={styles.container}>
+                    <View style={styles.logo}>
+                        <Logo />
+                    </View>
+                    {transitionState !== State.Launching && (
+                        <Animated.View style={toggleOpacity}>
+                            <Toggle options={BOARD_SIZES} value={size} onChange={onChangeSize} />
+                        </Animated.View>
+                    )}
+                    {transitionState !== State.Launching && (
+                        <Animated.View style={buttonOpacity}>
+                            <Button title={'Start Game'} onPress={this.handlePressStart} />
+                        </Animated.View>
+                    )}
                 </View>
-                <View>
-                    <Toggle options={BOARD_SIZES} value={size} onChange={onChangeSize}/>
-                </View>
-                <View>
-                    <Button title={'Start Game'} onPress={() => {}}/>
-                </View>
-            </View>
+            )
         );
     };
 }

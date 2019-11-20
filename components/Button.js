@@ -16,15 +16,15 @@ const getValue = (pressed, disabled) => {
 };
 
 export default class Button extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    onPress: PropTypes.func,
-    disabled: PropTypes.bool,
-    height: PropTypes.number,
-    color: ColorPropType,
-    fontSize: PropTypes.number,
-    borderRadius: PropTypes.number,
-  };
+  // static propTypes = {
+  //   title: PropTypes.string.isRequired,
+  //   onPress: PropTypes.func,
+  //   disabled: PropTypes.bool,
+  //   height: PropTypes.number,
+  //   color: ColorPropType,
+  //   fontSize: PropTypes.number,
+  //   borderRadius: PropTypes.number,
+  // };
 
   static defaultProps = {
     onPress: () => {},
